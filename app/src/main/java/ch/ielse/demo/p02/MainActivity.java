@@ -13,9 +13,11 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 
+import com.facebook.drawee.view.SimpleDraweeView;
+import com.mofanbaby.qiaotalk.widget.ImageWatcher;
+
 import java.util.List;
 
-import ch.ielse.view.imagewatcher.ImageWatcher;
 
 
 public class MainActivity extends Activity implements MessagePicturesLayout.Callback, ImageWatcher.OnPictureLongPressListener {
@@ -49,18 +51,15 @@ public class MainActivity extends Activity implements MessagePicturesLayout.Call
         // 一般来讲， ImageWatcher 需要占据全屏的位置
         vImageWatcher = (ImageWatcher) findViewById(R.id.v_image_watcher);
         // 如果是透明状态栏，你需要给ImageWatcher标记 一个偏移值，以修正点击ImageView查看的启动动画的Y轴起点的不正确
-        vImageWatcher.setTranslucentStatus(!isTranslucentStatus ? Utils.calcStatusBarHeight(this) : 0);
+        vImageWatcher.setTranslucentStatus(!isTranslucentStatus ? StatusBarUtils.calcStatusBarHeight(this) : 0);
         // 配置error图标
-        vImageWatcher.setErrorImageRes(R.mipmap.error_picture);
+        vImageWatcher.setErrorImageRes(R.drawable.default_portrait_detail);
         // 长按图片的回调，你可以显示一个框继续提供一些复制，发送等功能
         vImageWatcher.setOnPictureLongPressListener(this);
 
-        Utils.fitsSystemWindows(isTranslucentStatus, findViewById(R.id.v_fit));
-    }
+        StatusBarUtils.fitsSystemWindows(isTranslucentStatus, findViewById(R.id.v_fit));
 
-    @Override
-    public void onThumbPictureClick(ImageView i, List<ImageView> imageGroupList, List<String> urlList) {
-        vImageWatcher.show(i, imageGroupList, urlList);
+        
     }
 
     @Override
@@ -73,5 +72,10 @@ public class MainActivity extends Activity implements MessagePicturesLayout.Call
         if (!vImageWatcher.handleBackPressed()) {
             super.onBackPressed();
         }
+    }
+
+    @Override
+    public void onThumbPictureClick(SimpleDraweeView i, List<SimpleDraweeView> imageGroupList, List<String> urlList) {
+        vImageWatcher.show(i, imageGroupList, urlList);
     }
 }

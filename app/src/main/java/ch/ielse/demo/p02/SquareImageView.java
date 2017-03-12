@@ -2,9 +2,10 @@ package ch.ielse.demo.p02;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.widget.ImageView;
 
-public class SquareImageView extends ImageView {
+import com.facebook.drawee.view.SimpleDraweeView;
+
+public class SquareImageView extends SimpleDraweeView {
 
     public SquareImageView(Context context) {
         this(context, null);

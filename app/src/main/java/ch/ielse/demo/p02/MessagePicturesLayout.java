@@ -8,11 +8,10 @@ import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 
+import com.facebook.drawee.view.SimpleDraweeView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,8 +26,8 @@ public class MessagePicturesLayout extends FrameLayout implements View.OnClickLi
     private final LayoutParams lpChildImage = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
     private final int mSingleMaxSize;
     private final int mSpace;
-    private final List<ImageView> iPictureList = new ArrayList<>();
-    private final List<ImageView> mVisiblePictureList = new ArrayList<>();
+    private final List<SimpleDraweeView> iPictureList = new ArrayList<>();
+    private final List<SimpleDraweeView> mVisiblePictureList = new ArrayList<>();
     private final TextView tOverflowCount;
 
     private Callback mCallback;
@@ -44,12 +43,12 @@ public class MessagePicturesLayout extends FrameLayout implements View.OnClickLi
         mSpace = (int) (TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 2, mDisplayMetrics) + 0.5f);
 
         for (int i = 0; i < MAX_DISPLAY_COUNT; i++) {
-            ImageView squareImageView = new SquareImageView(context);
-            squareImageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-            squareImageView.setVisibility(View.GONE);
-            squareImageView.setOnClickListener(this);
-            addView(squareImageView);
-            iPictureList.add(squareImageView);
+            SquareImageView squareSimpleDraweeView = new SquareImageView(context);
+            squareSimpleDraweeView.setScaleType(SimpleDraweeView.ScaleType.CENTER_CROP);
+            squareSimpleDraweeView.setVisibility(View.GONE);
+            squareSimpleDraweeView.setOnClickListener(this);
+            addView(squareSimpleDraweeView);
+            iPictureList.add(squareSimpleDraweeView);
         }
 
         tOverflowCount = new TextView(context);
@@ -111,13 +110,13 @@ public class MessagePicturesLayout extends FrameLayout implements View.OnClickLi
 
         mVisiblePictureList.clear();
         for (int i = 0; i < iPictureList.size(); i++) {
-            final ImageView iPicture = iPictureList.get(i);
+            final SimpleDraweeView iPicture = iPictureList.get(i);
             if (i < urlListSize) {
                 iPicture.setVisibility(View.VISIBLE);
                 mVisiblePictureList.add(iPicture);
                 iPicture.setLayoutParams(lpChildImage);
                 iPicture.setBackgroundResource(R.drawable.default_picture);
-                Glide.with(getContext()).load(thumbList.get(i)).into(iPicture);
+                iPicture.setImageURI(thumbList.get(i));
                 iPicture.setTranslationX((i % column) * (imageSize + mSpace));
                 iPicture.setTranslationY((i / column) * (imageSize + mSpace));
             } else {
@@ -135,12 +134,12 @@ public class MessagePicturesLayout extends FrameLayout implements View.OnClickLi
     @Override
     public void onClick(View v) {
         if (mCallback != null) {
-            mCallback.onThumbPictureClick((ImageView) v, mVisiblePictureList, mDataList);
+            mCallback.onThumbPictureClick((SimpleDraweeView) v, mVisiblePictureList, mDataList);
         }
     }
 
     public interface Callback {
-        void onThumbPictureClick(ImageView i, List<ImageView> imageGroupList, List<String> urlList);
+        void onThumbPictureClick(SimpleDraweeView i, List<SimpleDraweeView> imageGroupList, List<String> urlList);
     }
 
     public void setCallback(Callback callback) {

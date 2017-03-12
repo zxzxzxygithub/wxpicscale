@@ -3,8 +3,12 @@ package ch.ielse.demo.p02;
 import android.content.Context;
 import android.view.View;
 
-
-public class Utils {
+/**
+ * @author zhengyx
+ * @description 状态栏
+ * @date 2017/3/11
+ */
+public class StatusBarUtils {
     public static void fitsSystemWindows(boolean isTranslucentStatus, View view) {
         if (isTranslucentStatus) {
             view.getLayoutParams().height = calcStatusBarHeight(view.getContext());
