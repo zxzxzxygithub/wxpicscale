@@ -698,7 +698,8 @@ public class ImageWatcher extends FrameLayout implements GestureDetector.OnGestu
                 }
 
                 int[] location = new int[2];
-                originRef.getLocationOnScreen(location);
+                SimpleDraweeView originRefPosition0 = mImageGroupList.get(0);
+                originRefPosition0.getLocationOnScreen(location);
                 simpleDraweeView.setTranslationX(location[0]);
                 int locationYOfFullScreen = location[1];
                 locationYOfFullScreen -= mStatusBarHeight;

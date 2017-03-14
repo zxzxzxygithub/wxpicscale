@@ -1,12 +1,15 @@
 package ch.ielse.demo.p02;
 
 import android.app.Activity;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.facebook.drawee.generic.GenericDraweeHierarchy;
+import com.facebook.drawee.generic.GenericDraweeHierarchyBuilder;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.mofanbaby.qiaotalk.widget.ImageWatcher;
 
@@ -31,7 +34,18 @@ public class SimpleDemoActivity extends Activity {
         setContentView(R.layout.activity_simpledemo);
 
         SimpleDraweeView iv_test = (SimpleDraweeView) findViewById(R.id.iv_test);
-        iv_test.setImageURI(url);
+        Uri uri = Uri.parse("res://" +
+                getPackageName() +"/"+
+                R.drawable.randomcolor11 + "");
+
+        GenericDraweeHierarchyBuilder builder =
+                new GenericDraweeHierarchyBuilder(getResources());
+        GenericDraweeHierarchy hierarchy = builder
+                .setPlaceholderImage(R.drawable.randomcolor11)
+                .build();
+        iv_test.setHierarchy(hierarchy);
+//        iv_test.setImageURI(uri);
+
         mVisiblePictureList.add(iv_test);
         mDataList.add(url);
         iv_test.setOnClickListener(new View.OnClickListener() {
